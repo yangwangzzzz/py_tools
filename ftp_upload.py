@@ -32,14 +32,30 @@ for file_name in file_list:
         ff_name = file_name[file_name.rfind('/') + 1:]
         try:
             ftp.mkd(dir_name)
-            ftp.cwd(dir_name)
             print u'创建目录 %s' % dir_name
-            upload(file_name, ff_name)
         except:
-            ftp.cwd(dir_name)
-            upload(file_name, ff_name)
+            pass
+		ftp.cwd(dir_name)
+        upload(file_name, ff_name)
     else:
         upload(file_name, file_name)
         pass
+		
+def get_revision():
+    revision_file_url = 'revision.txt'
+    if os.path.exists(revision_file_url):
+        revision_file = open(revision_file_url, 'r')
+        revision = int(revision_file.readline())
+        revision_file.close()
+    else:
+        revision = 100
+    print 'revision:', revision
+    return revision
+
+def save_revision_file(revision):
+    revision_file_url = 'revision.txt'
+    revision_file = open(revision_file_url, 'w')
+    revision_file.write(str(revision))
+    revision_file.close()
 
 
